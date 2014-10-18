@@ -5,6 +5,8 @@ class Main:
 	LEFT = 97
 	RIGHT = 100
 	game = Game()
+	karkki = Karkki()
+	myrkky = Myrkky()
 	def getInput(self):
 		key = cv2.waitKey(1)
 		print key
