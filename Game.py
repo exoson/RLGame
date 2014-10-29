@@ -23,6 +23,7 @@ class Game:
 		self.rot = 0
 		self.foods = []
 		self.potion = []
+		self.reward = 0
 	def forward(self):
 		self.x += 10*math.cos(self.rot)
 		self.y += 10*math.sin(self.rot)
@@ -42,15 +43,17 @@ class Game:
 		for ruoka in self.foods:
 			if not (math.sqrt(math.pow(self.x-ruoka.x,2)+math.pow(self.y-ruoka.y,2)) < self.RAD + self.FOODRAD):
 				keep.append(ruoka)
+			else:
+				self.reward += 1
 		for pot in self.potion:
 			if not (math.sqrt(math.pow(self.x-pot.x,2)+math.pow(self.y-pot.y,2)) < self.RAD + self.FOODRAD):
 				keepotion.append(pot)
+			else:
+				self.reward -= 1
 		self.foods = keep
 		self.potion = keepotion
 		foodCounter = len(keep)
 		potionCounter = len (keepotion)
-		print foodCounter
-		print potionCounter
 	def render(self):
 		view = np.zeros((720,1280,3),np.uint8)
 		cv2.circle(view,(int(self.x),int(self.y)),self.RAD,(0,255,255))
@@ -59,3 +62,9 @@ class Game:
 		for potion in self.potion:
 			cv2.circle(view,(int(potion.x), int(potion.y)),self.FOODRAD,(0,255,0))
 		cv2.imshow('saas',view)
+	def getView(self):
+		
+	def getReward(self):
+		temp = self.reward
+		self.reward = 0
+		return temp

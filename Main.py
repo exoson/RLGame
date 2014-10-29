@@ -1,5 +1,13 @@
+from pybrain.rl.learners.valuebased import ActionValueNetwork
+from pybrain.rl.agents import LearningAgent
+from pybrain.rl.learners import Q, SARSA
+from pybrain.rl.experiments import Experiment
+from pybrain.rl.environments import Task
 from Game import Game
+from Envi import env
+from Taski import Taski
 import cv2
+
 class Main:
 	UP = 119
 	LEFT = 97
@@ -24,8 +32,18 @@ class Main:
 			self.getInput()
 			self.update()
 			self.render()
-		
-	
+	def train(self):
+		environment = env()
+		net = ActionValueNetwork(3,3)
+		learner = Q()
+		agent = LearningAgent(net,learner)
+		task = Taski(environment)
+		exp = Experiment(task,agent)
+		self.training = True
+		while self.training:
+			exp.doInteractions(100)
+			agent.learn()
+			agent.reset()
 if __name__ == '__main__':
 	main = Main()
-	main.run()
+	main.train()
